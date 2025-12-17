@@ -1,0 +1,81 @@
+:root {
+    --bs-primary: #0d6efd;
+    --medical-bg: #f8f9fa;
+    --card-border-radius: 12px;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--medical-bg);
+    color: #343a40;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+}
+
+.card {
+    border-radius: var(--card-border-radius);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+}
+
+/* Subtle hover effect for input cards, but less for results to keep them stable */
+/* .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.05)!important;
+} */
+
+.form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border-color: #dee2e6;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+    border-color: #8bb9fe;
+}
+
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    background-color: #0066CC; /* Medical blue */
+    border-color: #0066CC;
+}
+
+.btn-primary:hover {
+    background-color: #0052a3;
+    border-color: #0052a3;
+}
+
+.result-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.result-badge {
+    font-size: 0.85rem;
+    padding: 0.35em 0.8em;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Specific colors for results */
+.text-safe { color: #198754; } /* Bootstrap success */
+.bg-safe-light { background-color: #d1e7dd; color: #0f5132; }
+
+.text-uncertain { color: #fd7e14; } /* Bootstrap orange/amber */
+.bg-uncertain-light { background-color: #ffecb5; color: #664d03; }
+
+.text-risk-low { color: #198754; }
+.bg-risk-low-light { background-color: #d1e7dd; color: #0f5132; }
+
+.text-risk-high { color: #dc3545; }
+.bg-risk-high-light { background-color: #f8d7da; color: #842029; }

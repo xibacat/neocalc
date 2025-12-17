@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Clínica Neonatal</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- Header -->
+    <header class="bg-white border-bottom shadow-sm py-3 mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h5 m-0 text-primary fw-semibold">NeoCalc <span class="text-secondary opacity-75 fw-light">| SAFE
+                    & FLOW-D</span></h1>
+            <span class="badge bg-light text-secondary border">v1.0</span>
+        </div>
+    </header>
+
+    <main class="container mb-5" style="max-width: 800px;">
+
+        <!-- Intro / Disclaimer -->
+        <div class="alert alert-info border-0 shadow-sm mb-4" role="alert">
+            <div class="d-flex">
+                <div class="me-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-info-circle-fill text-info" viewBox="0 0 16 16">
+                        <path
+                            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h5 class="alert-heading h6 fw-bold">Herramienta de apoyo clínico</h5>
+                    <p class="mb-0 small text-muted">Esta calculadora estima probabilidades de fenotipos clínicos. No
+                        sustituye el juicio médico profesional.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Input Form -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                        <h2 class="h5 fw-bold text-dark mb-0">Parámetros Clínicos</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="calcForm" novalidate>
+
+                            <!-- Flujo ductal -->
+                            <div class="mb-3">
+                                <label for="flujo" class="form-label small fw-semibold text-secondary">Flujo ductal
+                                    absoluto (mL)</label>
+                                <input type="number" class="form-control" id="flujo" placeholder="Ej. 1.10" min="0.2"
+                                    max="3.0" step="0.01" required>
+                                <div class="invalid-feedback">Rango válido: 0.2 - 3.0 mL</div>
+                            </div>
+
+                            <!-- Peso nacimiento -->
+                            <div class="mb-3">
+                                <label for="peso" class="form-label small fw-semibold text-secondary">Peso al nacimiento
+                                    (g)</label>
+                                <input type="number" class="form-control" id="peso" placeholder="Ej. 1200" min="300"
+                                    max="2500" step="1" required>
+                                <div class="invalid-feedback">Rango válido: 300 - 2500 g</div>
+                            </div>
+
+                            <!-- Edad Gestacional -->
+                            <div class="mb-3">
+                                <label for="eg" class="form-label small fw-semibold text-secondary">Edad gestacional
+                                    (semanas)</label>
+                                <input type="number" class="form-control" id="eg" placeholder="Ej. 28.5" min="22"
+                                    max="36" step="0.1" required>
+                                <div class="invalid-feedback">Rango válido: 22 - 36 semanas</div>
+                            </div>
+
+                            <!-- Edad inicio tratamiento -->
+                            <div class="mb-3">
+                                <label for="edadInicio" class="form-label small fw-semibold text-secondary">Edad inicio
+                                    tratamiento (días)</label>
+                                <input type="number" class="form-control" id="edadInicio" placeholder="Ej. 3" min="0"
+                                    max="21" step="1" required>
+                                <div class="invalid-feedback">Rango válido: 0 - 21 días</div>
+                            </div>
+
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary py-2 fw-medium">Calcular Riesgo</button>
+                                <button type="button" class="btn btn-outline-secondary py-2 btn-sm"
+                                    id="btnReset">Restablecer valores</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="col-md-6">
+                <div class="d-flex flex-column gap-3 h-100">
+
+                    <!-- SAFE Card -->
+                    <div class="card border-0 shadow-sm flex-fill" id="cardSafeWrapper">
+                        <div class="card-body p-4 d-flex flex-column justify-content-center">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h3 class="h6 fw-bold text-uppercase text-secondary m-0">SAFE <span
+                                        class="fw-light text-muted text-lowercase ms-1"
+                                        style="font-size: 0.8em;">(Estable)</span></h3>
+                                <button type="button" class="btn btn-link p-0 text-decoration-none text-muted"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-title="Estimación de probabilidad de fenotipo clínicamente estable."><small>?</small></button>
+                            </div>
+
+                            <div id="resultSafeContent" class="text-center py-3 opacity-50">
+                                <small class="text-muted">Introduce datos para calcular</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FLOW-D Card -->
+                    <div class="card border-0 shadow-sm flex-fill" id="cardFlowWrapper">
+                        <div class="card-body p-4 d-flex flex-column justify-content-center">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h3 class="h6 fw-bold text-uppercase text-secondary m-0">FLOW-D <span
+                                        class="fw-light text-muted text-lowercase ms-1"
+                                        style="font-size: 0.8em;">(Adverso)</span></h3>
+                                <button type="button" class="btn btn-link p-0 text-decoration-none text-muted"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-title="Estimación de probabilidad de evolución adversa global."><small>?</small></button>
+                            </div>
+
+                            <div id="resultFlowContent" class="text-center py-3 opacity-50">
+                                <small class="text-muted">Introduce datos para calcular</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-4 bg-white border-top mt-auto">
+        <div class="container">
+            <p class="small text-muted mb-0">© 2025 Portoles&Co Clinical Tools. Uso exclusivo para profesionales.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
