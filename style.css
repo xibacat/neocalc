@@ -13,7 +13,12 @@ body {
     flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     letter-spacing: -0.02em;
 }
 
@@ -45,7 +50,8 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 8px;
     font-weight: 500;
     letter-spacing: 0.01em;
-    background-color: #0066CC; /* Medical blue */
+    background-color: #0066CC;
+    /* Medical blue */
     border-color: #0066CC;
 }
 
@@ -71,14 +77,40 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Specific colors for results */
-.text-safe { color: #198754; } /* Bootstrap success */
-.bg-safe-light { background-color: #d1e7dd; color: #0f5132; }
+.text-safe {
+    color: #198754;
+}
 
-.text-uncertain { color: #fd7e14; } /* Bootstrap orange/amber */
-.bg-uncertain-light { background-color: #ffecb5; color: #664d03; }
+/* Bootstrap success */
+.bg-safe-light {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
 
-.text-risk-low { color: #198754; }
-.bg-risk-low-light { background-color: #d1e7dd; color: #0f5132; }
+.text-uncertain {
+    color: #fd7e14;
+}
 
-.text-risk-high { color: #dc3545; }
-.bg-risk-high-light { background-color: #f8d7da; color: #842029; }
+/* Bootstrap orange/amber */
+.bg-uncertain-light {
+    background-color: #ffecb5;
+    color: #664d03;
+}
+
+.text-risk-low {
+    color: #198754;
+}
+
+.bg-risk-low-light {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.text-risk-high {
+    color: #dc3545;
+}
+
+.bg-risk-high-light {
+    background-color: #f8d7da;
+    color: #842029;
+}
