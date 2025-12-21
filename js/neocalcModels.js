@@ -1,5 +1,8 @@
 // --- Mathematical Models ---
-export {calcFLOWD, calcSAFE};
+export {calcFLOWD, calcSAFE, thresholdFlow, thresholdSafe};
+
+const thresholdFlow = 0.47;
+const thresholdSafe = 0.459;
 /**
  * Calculates SAFE probability (Stable Phenotype).
  * Returns a number between 0 and 1.

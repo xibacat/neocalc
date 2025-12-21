@@ -2,7 +2,7 @@
  * Neocalc Calculator Script
  */
 
-import {calcFLOWD, calcSAFE} from './neocalcModels.js';
+import {calcFLOWD, calcSAFE, thresholdFlow, thresholdSafe} from './neocalcModels.js';
 
 // --- UI Logic ---
 
@@ -86,8 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateSafeCard(p) {
-        const threshold = 0.459;
-        const isStable = p >= threshold;
+        //const threshold = 0.459;
+        const isStable = p >= thresholdSafe;
         const percent = (p * 100).toFixed(1);
 
         // Define styles/text based on result
@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateFlowCard(p) {
-        const threshold = 0.47;
-        const isHighRisk = p >= threshold;
+        //const threshold = 0.47;
+        const isHighRisk = p >= thresholdFlow;
         const percent = (p * 100).toFixed(1);
 
         const label = isHighRisk ? "Riesgo elevado" : "Bajo riesgo";
