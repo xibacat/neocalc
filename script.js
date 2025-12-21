@@ -109,11 +109,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         form.classList.add('was-validated');
     });
+    // Validation on blur (lost focus)
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+            if (!input.value) return; // Don't validate empty fields on blur if not touched yet? Actually required fields should probably show error if left empty and blurred. 
+            // Standard behavior: if users leave the field, validate it.
+
+            if (input.checkValidity()) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            }
+        });
+
+        // Reset state on input to stop showing error while typing
+        input.addEventListener('input', () => {
+            input.classList.remove('is-invalid');
+            input.classList.remove('is-valid');
+        });
+    });
 
     // Handle Reset
     btnReset.addEventListener('click', () => {
         form.reset();
         form.classList.remove('was-validated');
+        form.querySelectorAll('input').forEach(input => {
+            input.classList.remove('is-invalid');
+            input.classList.remove('is-valid');
+        });
         resetResults();
     });
 
