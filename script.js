@@ -1,8 +1,8 @@
 /**
- * Clinical Calculator Script
+ * Neocalc Calculator Script
  */
 
-// --- Mathematical Models (Stubs as requested) ---
+// --- Mathematical Models ---
 
 /**
  * Calculates SAFE probability (Stable Phenotype).
@@ -10,7 +10,7 @@
  */
 function calcSAFE(FLUJOML, PesoD1, EGsem, EdadInicio) {
 
-    // Coeficientes SAFE (desde R)
+    // Coeficients SAFE (from R)
     const b0 = -28.20254534;
     const b_flujo = 0.58022365;
     const b_peso = 0.01695558;
@@ -34,7 +34,7 @@ function calcSAFE(FLUJOML, PesoD1, EGsem, EdadInicio) {
  */
 function calcFLOWD(FLUJOML, PesoD1, EGsem, EdadInicio) {
 
-    // Coeficientes FLOW-D (desde R)
+    // Coeficients FLOW-D (from R)
     const b0 = 32.78823733;
     const b_ns1 = 1.75804767;
     const b_ns2 = -14.14134246;
@@ -58,7 +58,7 @@ function calcFLOWD(FLUJOML, PesoD1, EGsem, EdadInicio) {
     return prob;
 }
 function naturalSplineFLUJOML(x) {
-    // Nudos y límites (desde R)
+    // Knots and limits (from R)
     const k1 = 0.9012766;
     const k2 = 1.2678588;
     const b0 = 0.2261947;
@@ -71,7 +71,7 @@ function naturalSplineFLUJOML(x) {
     const d1 = (tp(x, k1) - tp(x, k2)) / (k2 - k1);
     const d2 = (tp(x, k2) - tp(x, b1)) / (b1 - k2);
 
-    // Base spline natural (3 funciones)
+    // Natural base spline (3 functions)
     const ns1 = x;
     const ns2 = d1 - d2;
     const ns3 = d2;
@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         form.classList.add('was-validated');
     });
+
     // Validation on blur (lost focus)
     const inputs = form.querySelectorAll('input');
     inputs.forEach(input => {
