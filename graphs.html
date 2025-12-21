@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Gráfico - NeoCalc</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-light">
+
+    <!-- Header -->
+    <header class="bg-white border-bottom shadow-sm py-3 mb-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h5 m-0 text-primary fw-semibold">NeoCalc <span class="text-secondary opacity-75 fw-light">|
+                    Análisis Gráfico</span></h1>
+
+            <div class="d-flex align-items-center gap-3">
+                <a href="index.html" class="btn btn-outline-secondary btn-sm">Volver a Calculadora</a>
+                <span class="badge bg-light text-secondary border">v1.0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mb-5" style="max-width: 1000px;">
+        <div class="row g-4">
+
+            <!-- Controls (Left Column) -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                        <h2 class="h6 fw-bold text-dark mb-0">Configuración de Escenarios</h2>
+                        <p class="text-muted small mt-1">Selecciona la variable independiente (eje X) y ajusta los
+                            valores constantes.</p>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <!-- Independent Variable Selector -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-uppercase text-secondary">Eje X (Variable
+                                Independiente)</label>
+                            <div class="btn-group w-100" role="group" aria-label="X Axis Selection">
+                                <input type="radio" class="btn-check" name="xAxis" id="xFlujo" value="flujo" checked>
+                                <label class="btn btn-outline-primary btn-sm" for="xFlujo">Flujo</label>
+
+                                <input type="radio" class="btn-check" name="xAxis" id="xPeso" value="peso">
+                                <label class="btn btn-outline-primary btn-sm" for="xPeso">Peso</label>
+
+                                <input type="radio" class="btn-check" name="xAxis" id="xEg" value="eg">
+                                <label class="btn btn-outline-primary btn-sm" for="xEg">EG</label>
+
+                                <input type="radio" class="btn-check" name="xAxis" id="xEdad" value="edad">
+                                <label class="btn btn-outline-primary btn-sm" for="xEdad">Edad</label>
+                            </div>
+                        </div>
+
+                        <hr class="text-muted opacity-25">
+
+                        <!-- Sliders -->
+                        <div class="mt-4">
+                            <!-- Flujo Slider -->
+                            <div class="mb-4 control-group" id="groupFlujo">
+                                <label for="sliderFlujo"
+                                    class="form-label small fw-semibold d-flex justify-content-between">
+                                    Flujo ductal (mL)
+                                    <span class="badge bg-primary-subtle text-primary-emphasis"
+                                        id="valFlujo">1.10</span>
+                                </label>
+                                <input type="range" class="form-range" id="sliderFlujo" min="0.2" max="3.0" step="0.01"
+                                    value="1.10">
+                            </div>
+
+                            <!-- Peso Slider -->
+                            <div class="mb-4 control-group" id="groupPeso">
+                                <label for="sliderPeso"
+                                    class="form-label small fw-semibold d-flex justify-content-between">
+                                    Peso (g)
+                                    <span class="badge bg-primary-subtle text-primary-emphasis" id="valPeso">1200</span>
+                                </label>
+                                <input type="range" class="form-range" id="sliderPeso" min="300" max="2500" step="10"
+                                    value="1200">
+                            </div>
+
+                            <!-- EG Slider -->
+                            <div class="mb-4 control-group" id="groupEg">
+                                <label for="sliderEg"
+                                    class="form-label small fw-semibold d-flex justify-content-between">
+                                    EG (semanas)
+                                    <span class="badge bg-primary-subtle text-primary-emphasis" id="valEg">28.5</span>
+                                </label>
+                                <input type="range" class="form-range" id="sliderEg" min="22" max="36" step="0.5"
+                                    value="28.5">
+                            </div>
+
+                            <!-- Edad Slider -->
+                            <div class="mb-3 control-group" id="groupEdad">
+                                <label for="sliderEdad"
+                                    class="form-label small fw-semibold d-flex justify-content-between">
+                                    Edad inicio (días)
+                                    <span class="badge bg-primary-subtle text-primary-emphasis" id="valEdad">3</span>
+                                </label>
+                                <input type="range" class="form-range" id="sliderEdad" min="0" max="21" step="1"
+                                    value="3">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts (Right Column) -->
+            <div class="col-lg-8">
+                <div class="d-flex flex-column gap-4 h-100">
+
+                    <!-- SAFE Chart -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-bold text-secondary mb-3">Probabilidad SAFE (Estable)</h3>
+                            <div style="position: relative; height: 300px; width: 100%;">
+                                <canvas id="chartSafe"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FLOW-D Chart -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-bold text-secondary mb-3">Probabilidad FLOW-D (Adverso)</h3>
+                            <div style="position: relative; height: 300px; width: 100%;">
+                                <canvas id="chartFlow"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-4 bg-white border-top mt-auto">
+        <div class="container">
+            <p class="small text-muted mb-0">© 2025 Portoles&Co Clinical Tools. Uso exclusivo para profesionales.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="graphs.js"></script>
+</body>
+
+</html>
