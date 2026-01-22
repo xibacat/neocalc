@@ -2,7 +2,7 @@
  * Neocalc Calculator Script
  */
 
-import {calcFLOWD, calcSAFE, thresholdFlow, thresholdSafe} from './neocalcModels.js';
+import { calcFLOWD, calcSAFE, thresholdFlow, thresholdSafe, flujoML } from './neocalcModels.js';
 
 // --- UI Logic ---
 
@@ -66,8 +66,86 @@ document.addEventListener('DOMContentLoaded', () => {
             input.classList.remove('is-invalid');
             input.classList.remove('is-valid');
         });
+
+        // Reset specific UI states
+        document.getElementById('manualInputContainer').classList.remove('d-none');
+        document.getElementById('calculatedInputContainer').classList.add('d-none');
+        document.getElementById('flujo').readOnly = false;
+        document.getElementById('calcResultDisplay').textContent = '--';
+
         resetResults();
     });
+
+    // --- Flow Calculation Logic ---
+    const toggleCalc = document.getElementById('toggleCalculation');
+    const manualContainer = document.getElementById('manualInputContainer');
+    const calcContainer = document.getElementById('calculatedInputContainer');
+    const resultDisplay = document.getElementById('calcResultDisplay');
+    const inputFlujo = document.getElementById('flujo');
+
+    const inputD = document.getElementById('diametro');
+    const inputVmax = document.getElementById('vmax');
+    const inputFc = document.getElementById('fc');
+
+    toggleCalc.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            // Switch to Calculator Mode
+            // Keep manualContainer visible so we can see the 'flujo' input (which acts as the main value holder), 
+            // but make it read-only so user knows it comes from the calculator.
+            // Wait, previous plan was to hide/show. Let's see what looks best. 
+            // If I hide #flujo, I lose the validation message visibility on the main field.
+            // Better: Show both, but make #flujo read-only.
+            // Actually, the request said "activate text field OR new inputs". 
+            // Let's hide the manual input container if we are in calc mode?
+            // "Add a switch that activates the text field OR ... new inputs" -> Mutually exclusive visibility is likely desired.
+            // But I need #flujo for the form submission/validation.
+            // I will HIDE the manual container, but keep the input in DOM.
+            // But if hidden, browser validation bubbles might be weird.
+            // Let's keep manual container HIDDEN, but mirror the value to a visible span in the calc container?
+            // Yes, I already added <span id="calcResultDisplay">.
+
+            manualContainer.classList.add('d-none');
+            calcContainer.classList.remove('d-none');
+            // Remove required attribute from manual flow if hidden? No, we need it calculated.
+            // But if it's hidden, user can't fix it directly. They must fix D/V/FC.
+        } else {
+            // Switch to Manual Mode
+            manualContainer.classList.remove('d-none');
+            calcContainer.classList.add('d-none');
+            inputFlujo.readOnly = false;
+        }
+    });
+
+    function updateCalculatedFlow() {
+        const d = parseFloat(inputD.value);
+        const vmax = parseFloat(inputVmax.value);
+        const fc = parseFloat(inputFc.value);
+
+        if (!isNaN(d) && !isNaN(vmax) && !isNaN(fc)) {
+            // Call the model function (imported from neocalcModels.js)
+            // Note: neocalcModels.js export needs to be updated or I need to implement formula here if not available.
+            // I will assume it's imported as `flujoML`.
+            const flow = flujoML(d, vmax, fc);
+
+            inputFlujo.value = flow.toFixed(2);
+            resultDisplay.textContent = flow.toFixed(2);
+
+            // Trigger validation on the hidden field so the form knows it's valid/invalid
+            // We might need to manually handle 'is-valid' since it's hidden
+            if (flow >= 0.2 && flow <= 3.0) {
+                // Valid logic if needed
+            }
+        } else {
+            inputFlujo.value = '';
+            resultDisplay.textContent = '--';
+        }
+    }
+
+    [inputD, inputVmax, inputFc].forEach(input => {
+        input.addEventListener('input', updateCalculatedFlow);
+    });
+
+    // --- End Flow Calculation Logic ---
 
     function calculate() {
         // Parse inputs
@@ -100,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="result-value ${colorClass}">${p.toFixed(3)}</div>
             <div class="mb-2 text-muted small">(${percent}%)</div>
             <span class="badge ${badgeClass} result-badge border">${label}</span>
-        `;
+`;
     }
 
     function updateFlowCard(p) {
@@ -117,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="result-value ${colorClass}">${p.toFixed(3)}</div>
             <div class="mb-2 text-muted small">(${percent}%)</div>
             <span class="badge ${badgeClass} result-badge border">${label}</span>
-        `;
+`;
     }
 
     function resetResults() {

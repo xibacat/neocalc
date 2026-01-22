@@ -1,5 +1,5 @@
 // --- Mathematical Models ---
-export {calcFLOWD, calcSAFE, thresholdFlow, thresholdSafe};
+export { calcFLOWD, calcSAFE, flujoML, thresholdFlow, thresholdSafe };
 
 const thresholdFlow = 0.47;
 const thresholdSafe = 0.459;
@@ -26,7 +26,16 @@ function calcSAFE(FLUJOML, PesoD1, EGsem, EdadInicio) {
     const prob = 1 / (1 + Math.exp(-logit));
     return prob;
 }
-
+/**
+ * Calculates ductal flow (mL/min).
+ */
+function flujoML(D, vmax, fc) {
+    D = D / 1000;
+    //Area = pi * r^2 / 2 = pi * D^2 / 4
+    //Flow = Area * fc * vmax = pi * D^2 / 4 * fc * vmax
+    //Multiply by 1000 to convert to mL/min
+    return Math.PI * D * D / 4 * fc * vmax * 1000;
+}
 /**
  * Calculates FLOW-D probability (Adverse Outcome).
  * Returns a number between 0 and 1.
